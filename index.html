@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'MV Boli', 'Comic Sans MS', sans-serif;
-            background-color: #ffe6e6; /* Наш нежно-розовый фон */
+            background-color: #ffe6e6; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -19,19 +19,17 @@
             text-align: center;
         }
 
-        /* Тот самый круглый контейнер для гифок */
         .gif-container {
             width: 180px;
             height: 180px;
-            border-radius: 50%; /* Делает окошко круглым */
+            border-radius: 50%; 
             overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
             margin-bottom: 20px;
-            border: 4px solid #ffb3b3; /* Красивая рамочка в тон кнопок */
+            border: 4px solid #ffb3b3; 
             background-color: white;
         }
 
-        /* Чтобы гифка аккуратно вписывалась в круг и не растягивалась */
         .gif-container img {
             width: 100%;
             height: 100%;
@@ -80,9 +78,9 @@
 </head>
 <body>
 
-    <!-- Круглое окошко. Изначально ставим гифку с грустным/ожидающим котиком -->
+    <!-- ЗДЕСЬ ТЕПЕРЬ СТОИТ ВАША ГИФКА С КОТИКАМИ И СЕРДЕЧКАМИ -->
     <div class="gif-container">
-        <img id="moodGif" src="https://tenor.com" alt="Котик ждет">
+        <img id="moodGif" src="https://media1.tenor.com/m/ZZlzj540X3UAAAAC/%D0%BF%D0%BE%D1%86%D0%B5%D0%BB%D1%83%D0%B9-%D0%BB%D1%8E%D0%B1%D0%BB%D1%8E.gif" alt="Милые котики">
     </div>
 
     <h1>Пойдешь со мной на свидание? 😉</h1>
@@ -108,13 +106,11 @@
             const buttonsDiv = document.querySelector('.buttons');
             const gif = document.getElementById('moodGif');
             
-            // Прячем кнопки
             buttonsDiv.style.display = 'none';
             
-            // Меняем гифку на супер-радостную с сердечками!
-            gif.src = "https://tenor.com";
+            // Финальная гифка при согласии
+            gif.src = "https://media.tenor.com/xXNzEkd7BYYAAAAi/yapapa-cat.gif";
             
-            // Меняем текст
             h1.innerHTML = "Ура! 🎉<br><br>Я знал, что ты согласишься! ❤️<br>С меня вкусный кофе.<br><br>Жду тебя в Telegram, напиши когда свободна! 😉";
             h1.style.color = "#b33939"; 
         }
