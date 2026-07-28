@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Важный вопрос!</title>
+    
+    <style>
+        body {
+            font-family: 'MV Boli', 'Comic Sans MS', sans-serif;
+            background-color: #ffe6e6; /* Наш нежно-розовый фон */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Тот самый круглый контейнер для гифок */
+        .gif-container {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%; /* Делает окошко круглым */
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+            margin-bottom: 20px;
+            border: 4px solid #ffb3b3; /* Красивая рамочка в тон кнопок */
+            background-color: white;
+        }
+
+        /* Чтобы гифка аккуратно вписывалась в круг и не растягивалась */
+        .gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            color: #b33939; 
+            font-size: 2.2rem;
+            margin-top: 0;
+            margin-bottom: 40px;
+            padding: 0 20px;
+            line-height: 1.4;
+        }
+
+        .buttons {
+            position: relative;
+            width: 320px;
+            height: 80px;
+        }
+
+        button {
+            width: 100px;
+            height: 50px;
+            font-family: 'MV Boli', 'Comic Sans MS', sans-serif;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            position: absolute;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        #yesBtn {
+            background-color: #ffb3b3; 
+            color: #4a1515;
+            left: 40px;
+        }
+
+        #noBtn {
+            background-color: #ff9999; 
+            color: #4a1515;
+            right: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Круглое окошко. Изначально ставим гифку с грустным/ожидающим котиком -->
+    <div class="gif-container">
+        <img id="moodGif" src="https://tenor.com" alt="Котик ждет">
+    </div>
+
+    <h1>Пойдешь со мной на свидание? 😉</h1>
+    
+    <div class="buttons">
+        <button id="yesBtn" onclick="sayYes()">Да!</button>
+        <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Нет</button>
+    </div>
+
+    <script>
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 70);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function sayYes() {
+            const h1 = document.querySelector('h1');
+            const buttonsDiv = document.querySelector('.buttons');
+            const gif = document.getElementById('moodGif');
+            
+            // Прячем кнопки
+            buttonsDiv.style.display = 'none';
+            
+            // Меняем гифку на супер-радостную с сердечками!
+            gif.src = "https://tenor.com";
+            
+            // Меняем текст
+            h1.innerHTML = "Ура! 🎉<br><br>Я знал, что ты согласишься! ❤️<br>С меня вкусный кофе.<br><br>Жду тебя в Telegram, напиши когда свободна! 😉";
+            h1.style.color = "#b33939"; 
+        }
+    </script>
+
+</body>
+</html>
