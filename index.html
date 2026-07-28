@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Важный вопрос!</title>
     
+    <!-- ПОДКЛЮЧАЕМ КРАСИВЫЙ ШРИФТ ИЗ ИНТЕРНЕТА, КОТОРЫЙ ОТКРОЕТСЯ НА ВСЕХ ТЕЛЕФОНАХ -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+    
     <style>
         body {
-            font-family: 'MV Boli', 'Comic Sans MS', sans-serif;
+            /* Применяем наш новый веб-шрифт Neucha */
+            font-family: 'Neucha', cursive, sans-serif;
             background-color: #ffe6e6; 
             display: flex;
             flex-direction: column;
@@ -38,11 +44,12 @@
 
         h1 {
             color: #b33939; 
-            font-size: 2.2rem;
+            /* Немного увеличил размер для нового шрифта, чтобы выглядело сочнее */
+            font-size: 2.6rem; 
             margin-top: 0;
             margin-bottom: 40px;
             padding: 0 20px;
-            line-height: 1.4;
+            line-height: 1.2;
         }
 
         .buttons {
@@ -54,8 +61,9 @@
         button {
             width: 100px;
             height: 50px;
-            font-family: 'MV Boli', 'Comic Sans MS', sans-serif;
-            font-size: 1.2rem;
+            /* Кнопкам тоже задаем новый красивый шрифт */
+            font-family: 'Neucha', cursive, sans-serif;
+            font-size: 1.4rem;
             border: none;
             border-radius: 12px;
             cursor: pointer;
@@ -78,9 +86,8 @@
 </head>
 <body>
 
-    <!-- ЗДЕСЬ ТЕПЕРЬ СТОИТ ВАША ГИФКА С КОТИКАМИ И СЕРДЕЧКАМИ -->
     <div class="gif-container">
-        <img id="moodGif" src="https://media1.tenor.com/m/ZZlzj540X3UAAAAC/%D0%BF%D0%BE%D1%86%D0%B5%D0%BB%D1%83%D0%B9-%D0%BB%D1%8E%D0%B1%D0%BB%D1%8E.gif" alt="Милые котики">
+        <img id="moodGif" src="https://tenor.com" alt="Милые котики">
     </div>
 
     <h1>Пойдешь со мной на свидание? 😉</h1>
@@ -108,8 +115,7 @@
             
             buttonsDiv.style.display = 'none';
             
-            // Финальная гифка при согласии
-            gif.src = "https://media.tenor.com/xXNzEkd7BYYAAAAi/yapapa-cat.gif";
+            gif.src = "https://giphy.com";
             
             h1.innerHTML = "Ура! 🎉<br><br>Я знал, что ты согласишься! ❤️<br>С меня вкусный кофе.<br><br>Жду тебя в Telegram, напиши когда свободна! 😉";
             h1.style.color = "#b33939"; 
