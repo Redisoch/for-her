@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Важный вопрос!</title>
     
-    <!-- ИСПРАВЛЕНО: Теперь шрифт принудительно скачивается с поддержкой РУССКОГО языка (cyrillic) -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Pangolin&display=swap&subset=cyrillic" rel="stylesheet">
     
     <style>
         body {
-            /* Применяем мультяшный шрифт Pangolin с поддержкой русского языка */
             font-family: 'Pangolin', cursive, sans-serif;
-            background-color: #ffe6e6; 
+            background-color: #ffe6e6; /* Наш нежно-розовый фон */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,6 +21,45 @@
             margin: 0;
             overflow: hidden;
             text-align: center;
+            position: relative;
+        }
+
+        /* Контейнер для летающих сердечек */
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Чтобы сердечки не мешали кликать по кнопкам */
+            z-index: 1;
+        }
+
+        /* Стиль одного падающего сердечка */
+        .heart-particle {
+            position: absolute;
+            color: #ffd1d1; /* Буквально на один тон темнее фона */
+            font-size: 24px;
+            user-select: none;
+            animation: fall linear infinite;
+        }
+
+        /* Анимация плавного падения вниз */
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         .gif-container {
@@ -32,8 +69,9 @@
             overflow: hidden;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
             margin-bottom: 20px;
-            border: 4px solid #ffb3b3; 
+            border: 4px solid #ff9999; 
             background-color: white;
+            z-index: 2;
         }
 
         .gif-container img {
@@ -49,12 +87,14 @@
             margin-bottom: 40px;
             padding: 0 20px;
             line-height: 1.3;
+            z-index: 2;
         }
 
         .buttons {
             position: relative;
             width: 320px;
             height: 80px;
+            z-index: 2;
         }
 
         button {
@@ -66,23 +106,28 @@
             border-radius: 12px;
             cursor: pointer;
             position: absolute;
+            /* Исправлено: transition теперь отвечает за супер-плавное скольжение кнопки */
+            transition: left 0.3s ease-out, top 0.3s ease-out;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         #yesBtn {
-            background-color: #ffb3b3; 
+            background-color: #ff9999; /* Сделали чуть темнее, на тон кнопок прошлых версий */
             color: #4a1515;
             left: 40px;
         }
 
         #noBtn {
-            background-color: #ff9999; 
+            background-color: #ff8080; /* На тон темнее кнопки "Да" */
             color: #4a1515;
             right: 40px;
         }
     </style>
 </head>
 <body>
+
+    <!-- Сюда JavaScript будет сыпать сердечки -->
+    <div class="hearts-container" id="heartsContainer"></div>
 
     <div class="gif-container">
         <img id="moodGif" src="https://media1.tenor.com/m/ZZlzj540X3UAAAAC/%D0%BF%D0%BE%D1%86%D0%B5%D0%BB%D1%83%D0%B9-%D0%BB%D1%8E%D0%B1%D0%BB%D1%8E.gif" alt="Милые котики">
@@ -92,18 +137,68 @@
     
     <div class="buttons">
         <button id="yesBtn" onclick="sayYes()">Да!</button>
-        <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Нет</button>
+        <!-- Добавили начальные координаты, чтобы скрипту было от чего отталкиваться -->
+        <button id="noBtn" style="left: 180px; top: 0px;" onmouseover="moveButton()" onclick="moveButton()">Нет</button>
     </div>
 
     <script>
+        // Функция генерации падающих сердечек
+        function createHeart() {
+            const container = document.getElementById('heartsContainer');
+            if (!container) return;
+            
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.innerHTML = '❤️';
+            
+            // Рандомное место появления по горизонтали и размер
+            heart.style.left = Math.random() * 100 + 'vw';
+            const size = Math.random() * 15 + 15; // от 15px до 30px
+            heart.style.fontSize = size + 'px';
+            
+            // Рандомная скорость падения (от 4 до 8 секунд)
+            heart.style.animationDuration = Math.random() * 4 + 4 + 's';
+            
+            container.appendChild(heart);
+            
+            // Удаляем сердечко после падения, чтобы не перегружать телефон
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Запускаем бесконечный дождь из сердечек (каждые 400 миллисекунд)
+        setInterval(createHeart, 400);
+
+        // Функция плавного убегания кнопки в определенном радиусе
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
-            const x = Math.random() * (window.innerWidth - 120);
-            const y = Math.random() * (window.innerHeight - 70);
             
+            // Получаем текущие координаты кнопки на экране
+            const rect = noBtn.getBoundingClientRect();
+            const currentX = rect.left;
+            const currentY = rect.top;
+            
+            // Задаем радиус смещения (максимум на 150 пикселей в любую сторону)
+            const radius = 150;
+            const angle = Math.random() * Math.PI * 2; // случайное направление
+            const distance = Math.random() * radius + 50; // случайное расстояние от 50 до 150px
+            
+            // Вычисляем новые координаты
+            let newX = currentX + Math.cos(angle) * distance;
+            let newY = currentY + Math.sin(angle) * distance;
+            
+            // Жесткие проверки границ, чтобы кнопка не уплыла за края экрана телефона
+            const padding = 20;
+            if (newX < padding) newX = padding;
+            if (newX > window.innerWidth - 120) newX = window.innerWidth - 120;
+            if (newY < padding) newY = padding;
+            if (newY > window.innerHeight - 70) newY = window.innerHeight - 70;
+            
+            // Переключаем позиционирование на fixed для плавного движения относительно экрана
             noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
         }
 
         function sayYes() {
