@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Важный вопрос!</title>
-    
-    <!-- Подключаем милый округлый шрифт -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
-    
     <style>
         body {
             font-family: 'Pangolin', 'Comic Sans MS', sans-serif;
@@ -24,297 +21,161 @@
             text-align: center;
             position: relative;
         }
-
-        /* Контейнер для падающих сердечек */
         .hearts-container {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; 
-            z-index: 1;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
         }
-
         .heart-particle {
-            position: absolute;
-            color: #ffb3b3; 
-            user-select: none;
-            animation: fall linear infinite;
+            position: absolute; color: #ffb3b3; 
+            user-select: none; animation: fall linear infinite; z-index: 1;
         }
-
         @keyframes fall {
             0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
             10% { opacity: 0.7; }
             90% { opacity: 0.7; }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-
-        /* Обертка для контента */
         .content-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.4s ease-in-out;
-            max-width: 400px;
-            width: 90%;
-            z-index: 2;
+            position: relative; z-index: 10;
+            max-width: 400px; width: 90%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-
         .gif-container {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%; 
-            overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
-            margin-bottom: 20px;
-            border: 4px solid #ffb3b3; 
-            background-color: white;
+            width: 180px; height: 180px; border-radius: 50%; 
+            overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
+            margin-bottom: 20px; border: 4px solid #ffb3b3; background-color: white;
         }
-
-        .gif-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        h1 {
-            color: #b33939; 
-            font-size: 2.2rem;
-            margin-top: 0;
-            margin-bottom: 40px;
-            padding: 0 20px;
-            line-height: 1.4;
-        }
-
-        .buttons {
-            position: relative;
-            width: 320px;
-            height: 80px;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-        }
-
+        .gif-container img { width: 100%; height: 100%; object-fit: cover; }
+        h1 { color: #b33939; font-size: 2.2rem; margin: 0 0 30px 0; padding: 0 20px; line-height: 1.4; }
+        .buttons-block { display: flex; justify-content: center; gap: 40px; width: 320px; height: 80px; position: relative; }
         button, .submit-btn {
-            width: 110px;
-            height: 50px;
-            font-family: inherit;
-            font-size: 1.3rem;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: background-color 0.2s, transform 0.1s;
+            width: 110px; height: 50px; font-family: inherit; font-size: 1.3rem;
+            border: none; border-radius: 12px; cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: background-color 0.2s;
         }
-
-        #yesBtn {
-            background-color: #ffb3b3; 
-            color: #4a1515;
-        }
-
-        #yesBtn:hover {
-            background-color: #ff9999;
-            transform: scale(1.05);
-        }
-
-        #noBtn {
-            background-color: #ff9999; 
-            color: #4a1515;
-            position: absolute; 
-            right: 40px;
-            transition: left 0.15s ease-out, top 0.15s ease-out;
-        }
-
-        /* Стили для формы (анкеты) */
+        #yesBtn { background-color: #ffb3b3; color: #4a1515; }
+        #yesBtn:hover { background-color: #ff9999; }
+        #noBtn { background-color: #ff9999; color: #4a1515; position: absolute; right: 40px; top: 0; }
+        .form-block { display: none; width: 100%; }
         .date-form {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-            box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 15px; width: 100%; padding: 20px;
+            background: rgba(255, 255, 255, 0.9); border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05); box-sizing: border-box;
         }
-
-        .date-form label {
-            color: #b33939;
-            font-size: 1.2rem;
-            text-align: left;
-            margin-bottom: -5px;
+        .date-form label { color: #b33939; font-size: 1.2rem; text-align: left; margin-bottom: -5px; }
+        .date-form input[type="date"], .date-form input[type="time"] {
+            padding: 10px; border: 2px solid #ffb3b3; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; background: white; outline: none;
         }
-
-        .date-form input[type="date"],
-        .date-form input[type="time"] {
-            padding: 10px;
-            border: 2px solid #ffb3b3;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 1rem;
-            background: white;
-            outline: none;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 5px;
-        }
-
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 5px; }
         .checkbox-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #ffe0e0;
-            padding: 8px 14px;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            color: #4a1515;
-            cursor: pointer;
-            transition: 0.2s;
+            display: flex; align-items: center; gap: 8px; background: #ffe0e0;
+            padding: 8px 14px; border-radius: 25px; font-size: 0.9rem; color: #4a1515; cursor: pointer; transition: 0.2s;
         }
-
-        .checkbox-group label:hover {
-            background: #ffcccc;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            accent-color: #ff9999;
-            width: 18px;
-            height: 18px;
-            margin: 0;
-        }
-
-        .submit-btn {
-            background-color: #ffb3b3;
-            color: #4a1515;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            background-color: #ff9999;
-        }
+        .checkbox-group label:hover { background: #ffcccc; }
+        .checkbox-group input[type="checkbox"] { accent-color: #ff9999; width: 18px; height: 18px; margin: 0; }
+        .submit-btn { background-color: #ffb3b3; color: #4a1515; width: 100%; margin-top: 10px; }
+        .submit-btn:hover { background-color: #ff9999; }
     </style>
 </head>
 <body>
 
-    <!-- Контейнер для падающих сердечек -->
     <div class="hearts-container" id="heartsContainer"></div>
 
-    <div class="content-wrapper" id="mainContent">
+    <div class="content-wrapper">
         <div class="gif-container">
-            <img id="moodGif" src="https://tenor.com" alt="Милые котики">
+            <img id="moodGif" src="https://media.tenor.com/s8rSo_KBvMkAAAAM/cute-cat-cat.gif" alt="Милые котики">
         </div>
 
         <h1 id="mainTitle">Пойдешь со мной на свидание? 😉</h1>
         
-        <!-- Первый экран: Кнопки -->
-        <div class="buttons" id="buttonsBlock">
+        <div class="buttons-block" id="buttonsBlock">
             <button id="yesBtn" onclick="sayYes()">Да!</button>
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Нет</button>
         </div>
 
-        <!-- Второй экран: Анкета (Данные уйдут на FormSubmit) -->
-        <!-- ТУТ ЗАМЕНИТЕ your-email@gmail.com НА ВАШУ РЕАЛЬНУЮ ПОЧТУ -->
-        <form class="date-form" id="dateForm" action="https://formsubmit.co" method="POST">
-            <!-- Отключаем капчу, чтобы девушке не вылазили картинки со светофорами -->
-            <input type="hidden" name="_captcha" value="false">
-            <!-- Страница, куда перенаправит после отправки (оставляем этот же сайт) -->
-            <input type="hidden" name="_next" value="about:blank">
+        <div class="form-block" id="formBlock">
+            <!-- ТУТ ЗАМЕНИТЕ НА ВАШУ ПОЧТУ -->
+            <form class="date-form" id="dateForm" action="https://formsubmit.co/markowsky.daniil@gmail.com" method="POST">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="about:blank">
 
-            <label for="dateInput">Выбери день:</label>
-            <input type="date" name="Дата свидания" id="dateInput" required>
+                <label for="dateInput">Выбери день:</label>
+                <input type="date" name="Дата" id="dateInput" required>
 
-            <label for="timeInput">Выбери время:</label>
-            <input type="time" name="Время" id="timeInput" required>
+                <label for="timeInput">Выбери время:</label>
+                <input type="time" name="Время" id="timeInput" required>
 
-            <label>Чем займемся?</label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" name="План[]" value="Кино"> Кино</label>
-                <label><input type="checkbox" name="План[]" value="Кафе"> Кафе</label>
-                <label><input type="checkbox" name="План[]" value="Прогулка"> Прогулка</label>
-                <label><input type="checkbox" name="План[]" value="Поедим пиццу"> Поедим пиццу</label>
-            </div>
+                <label>Чем займемся?</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="Планы[]" value="Кино"> Кино</label>
+                    <label><input type="checkbox" name="Планы[]" value="Кафе"> Кафе</label>
+                    <label><input type="checkbox" name="Планы[]" value="Прогулка"> Прогулка</label>
+                    <label><input type="checkbox" name="Планы[]" value="Пицца"> Пицца</label>
+                </div>
 
-            <button type="submit" class="submit-btn">Отправить ответ</button>
-        </form>
+                <button type="submit" class="submit-btn">Отправить</button>
+            </form>
+        </div>
     </div>
 
     <script>
-        // --- 1. ГЕНЕРАЦИЯ СЕРДЕЧЕК ---
         const container = document.getElementById('heartsContainer');
-        const heartSymbols = ['❤️', '💖', '💝', '💕', '🌸'];
+        const heartSymbols = ['❤️', '💖', '💝', '💕'];
         
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart-particle');
             heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 3 + 's'; // от 3 до 6 секунд
-            heart.style.fontSize = Math.random() * 15 + 15 + 'px'; // размер от 15px до 30px
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            heart.style.fontSize = Math.random() * 15 + 15 + 'px';
             container.appendChild(heart);
-
-            // Удаляем сердечко после окончания анимации
             setTimeout(() => { heart.remove(); }, 6000);
         }
-        setInterval(createHeart, 300); // Создавать новое сердечко каждые 300мс
+        setInterval(createHeart, 350);
 
-        // --- 2. УБЕГАЮЩАЯ КНОПКА ---
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             if (noBtn.style.position !== 'fixed') { noBtn.style.position = 'fixed'; }
-
-            const padding = 20;
-            const maxX = window.innerWidth - 110 - padding;
-            const maxY = window.innerHeight - 50 - padding;
-
+            const padding = 30;
+            const maxX = window.innerWidth - 120 - padding;
+            const maxY = window.innerHeight - 60 - padding;
             const x = Math.max(padding, Math.random() * maxX);
             const y = Math.max(padding, Math.random() * maxY);
-            
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+            noBtn.style.left = x + 'px'; noBtn.style.top = y + 'px';
         }
 
-        // --- 3. НАЖАТИЕ НА «ДА» ---
         function sayYes() {
-            const wrapper = document.getElementById('mainContent');
-            const h1 = document.getElementById('mainTitle');
-            const buttonsDiv = document.getElementById('buttonsBlock');
-            const dateForm = document.getElementById('dateForm');
-            const gif = document.getElementById('moodGif');
-            
-            wrapper.style.opacity = '0';
-            
-            setTimeout(() => {
-                buttonsDiv.style.display = 'none';
-                h1.innerHTML = " Прекрасный выбор! Заполни анкету:";
-                h1.style.fontSize = "1.8rem";
-                h1.style.marginBottom = "20px";
-                
-                // Показываем форму
-                dateForm.style.display = 'flex';
-                wrapper.style.opacity = '1';
-            }, 400);
+            document.getElementById('buttonsBlock').style.display = 'none';
+            document.getElementById('mainTitle').innerHTML = "Прекрасный выбор! 🥰<br>Заполни анкету:";
+            document.getElementById('mainTitle').style.fontSize = "1.8rem";
+            document.getElementById('formBlock').style.display = 'block';
         }
-        // --- 4. ПЕРЕХВАТ ОТПРАВКИ ФОРМЫ ---
-        document.getElementById('dateForm').addEventListener('submit', function(e) {e.preventDefault(); 
-        // Останавливаем стандартную перезагрузку страницы
+
+        document.getElementById('dateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             const form = this;
-            const wrapper = document.getElementById('mainContent');
             const h1 = document.getElementById('mainTitle');
             const gif = document.getElementById('moodGif');
-        // Отправляем данные на почту в фоновом режиме через fetch
-        fetch(form.action, {method: 'POST',body: new FormData(form),headers: { 'Accept': 'application/json' }}).then(() => {
-            // Когда данные успешно ушли, плавно показываем экран финала
-        wrapper.style.opacity = '0';setTimeout(() => {form.style.display = 'none';gif.src = "tenor.com"; 
-        // Веселый кот
-        h1.innerHTML = "Ура! 🎉Ответ отправлен мне на почту! ❤️С меня вкусный кофе. Жду тебя в Telegram, спишемся! 😉";
-        h1.style.fontSize = "2.2rem";
-        wrapper.style.opacity = '1';}, 400);}).catch(error => {alert('Ой, что-то пошло не так при отправке. Напиши мне в ТГ!');
-        console.error(error);});});
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(() => {
+                document.getElementById('formBlock').style.display = 'none';
+                gif.src = "https://tenor.com";
+                h1.innerHTML = "Ура! 🎉<br><br>Ответ отправлен мне на почту! ❤️<br>С меня вкусный кофе.<br><br>Жду тебя в Telegram, спишемся! 😉";
+                h1.style.fontSize = "2.1rem";
+            })
+            .catch(error => {
+                alert('Ошибка сети. Напиши мне в ТГ! 😉');
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>
