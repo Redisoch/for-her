@@ -123,20 +123,270 @@
     <div class="hearts-container" id="heartsContainer"></div>
 
     <!-- Обернули всё содержимое в класс main-content для эффекта перетекания -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Важный вопрос!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap&subset=cyrillic" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Pangolin', cursive, sans-serif;
+            background-color: #ffe6e6; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            z-index: 1;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: #ffd1d1; 
+            font-size: 24px;
+            user-select: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Общая обертка для контента */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+            position: relative;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .gif-container {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%; 
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
+            margin-bottom: 20px;
+            border: 4px solid #ff9999; 
+            background-color: white;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            color: #b33939; 
+            font-size: 2.4rem; 
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding: 0 20px;
+            line-height: 1.3;
+        }
+
+        /* Стили для формы выбора */
+        .date-form {
+            display: none; /* изначально скрыта */
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            margin-top: 10px;
+        }
+
+        .date-form.active {
+            display: flex;
+        }
+
+        .date-form label {
+            color: #b33939;
+            font-size: 1.2rem;
+            text-align: left;
+            margin-bottom: -10px;
+        }
+
+        .date-form input[type="date"],
+        .date-form input[type="time"] {
+            padding: 10px;
+            border: 2px solid #ff9999;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: white;
+            color: #333;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #ffe0e0;
+            padding: 8px 14px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: #4a1515;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .checkbox-group label:hover {
+            background: #ffcccc;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            accent-color: #ff9999;
+            width: 18px;
+            height: 18px;
+        }
+
+        .send-btn {
+            background-color: #ff9999;
+            color: #4a1515;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-family: inherit;
+            font-size: 1.3rem;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+        .send-btn:hover {
+            background-color: #ff8080;
+        }
+
+        .success-message {
+            display: none;
+            color: #b33939;
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+
+        .buttons {
+            position: relative;
+            width: 320px;
+            height: 80px;
+        }
+
+        button {
+            width: 100px;
+            height: 50px;
+            font-family: 'Pangolin', cursive, sans-serif;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            position: absolute;
+            transition: left 0.3s ease-out, top 0.3s ease-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        #yesBtn {
+            background-color: #ff9999; 
+            color: #4a1515;
+            left: 40px;
+        }
+
+        #noBtn {
+            background-color: #ff8080; 
+            color: #4a1515;
+            right: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Обернули всё содержимое в класс main-content -->
     <div class="main-content" id="mainContent">
-        <div class="gif-container">
-            <img id="moodGif" src=https://media1.tenor.com/m/ZZlzj540X3UAAAAC/%D0%BF%D0%BE%D1%86%D0%B5%D0%BB%D1%83%D0%B9-%D0%BB%D1%8E%D0%B1%D0%BB%D1%8E.gif" alt="Милые котики">
+        <!-- Первый экран (вопрос) -->
+        <div id="questionScreen">
+            <div class="gif-container">
+                <img id="moodGif" src="https://media1.tenor.com/m/ZZlzj540X3UAAAAC/%D0%BF%D0%BE%D1%86%D0%B5%D0%BB%D1%83%D0%B9-%D0%BB%D1%8E%D0%B1%D0%BB%D1%8E.gif" alt="Милые котики">
+            </div>
+            <h1>Пойдешь со мной на свидание? 😉</h1>
+            <div class="buttons">
+                <button id="yesBtn" onclick="sayYes()">Да!</button>
+                <button id="noBtn" style="left: 180px; top: 0px;" onmouseover="moveButton()" onclick="moveButton()">Нет</button>
+            </div>
         </div>
 
-        <h1>Пойдешь со мной на свидание? 😉</h1>
-        
-        <div class="buttons">
-            <button id="yesBtn" onclick="sayYes()">Да!</button>
-            <button id="noBtn" style="left: 180px; top: 0px;" onmouseover="moveButton()" onclick="moveButton()">Нет</button>
+        <!-- Второй экран (форма выбора) -->
+        <div id="dateFormScreen" class="date-form">
+            <h2 style="margin-top:0; color:#b33939;">✨ Выбери детали ✨</h2>
+            <label for="datePicker">📅 Дата:</label>
+            <input type="date" id="datePicker" required>
+            
+            <label for="timePicker">⏰ Время:</label>
+            <input type="time" id="timePicker" required>
+            
+            <label>🎯 Чем займёмся?</label>
+            <div class="checkbox-group" id="activities">
+                <label><input type="checkbox" value="Кофе"> Кофе</label>
+                <label><input type="checkbox" value="Кино"> Кино</label>
+                <label><input type="checkbox" value="Прогулка"> Прогулка</label>
+                <label><input type="checkbox" value="Ресторан"> Ресторан</label>
+                <label><input type="checkbox" value="Квест"> Квест</label>
+                <label><input type="checkbox" value="Пикник"> Пикник</label>
+                <!-- Можешь добавить свои варианты -->
+            </div>
+            
+            <button class="send-btn" onclick="submitDate()">Отправить 💌</button>
+            <div class="success-message" id="successMsg">✅ Я всё узнал! Жду тебя 😏</div>
         </div>
     </div>
 
     <script>
+        // ========================
+        // НАСТРОЙКИ (замени своими)
+        // ========================
+        const TELEGRAM_TOKEN = '8485718310:AAHBpW2HGxwl8dpYYwnsPb7GwTdxCK1QJ_M'; // токен бота
+        const TELEGRAM_CHAT_ID = '5068385524'; // твой chat_id (число)
+
+        // Сердечки на фоне
         function createHeart() {
             const container = document.getElementById('heartsContainer');
             if (!container) return;
@@ -152,6 +402,7 @@
         }
         setInterval(createHeart, 400);
 
+        // Убегающая кнопка "Нет"
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const rect = noBtn.getBoundingClientRect();
@@ -173,34 +424,63 @@
             
             noBtn.style.position = 'fixed';
             noBtn.style.left = newX + 'px';
-            noBtn.style.top = y = newY + 'px';
+            noBtn.style.top = newY + 'px';
         }
 
-        // Логика плавного перетекания экранов
+        // Показ формы выбора после "Да"
         function sayYes() {
-            const mainContent = document.getElementById('mainContent');
-            const h1 = document.querySelector('h1');
-            const buttonsDiv = document.querySelector('.buttons');
-            const gif = document.getElementById('moodGif');
-            
-            // Шаг 1: Делаем первый экран полностью прозрачным
-            mainContent.style.opacity = '0';
-            
-            // Шаг 2: Ждем 500 миллисекунд (пока контент полностью растворится) и меняем его
-            setTimeout(() => {
-                buttonsDiv.style.display = 'none'; // Убираем кнопки
-                
-                // Ставим праздничную гифку
-                gif.src = "https://media.tenor.com/xXNzEkd7BYYAAAAi/yapapa-cat.gif";
-                
-                // Обновляем текст
-                h1.innerHTML = "Ура! 🎉<br><br>Я знал, что ты согласишься! ❤️<br>С меня вкусный кофе.<br><br>Жду тебя в Telegram, напиши когда свободна! 😉";
-                
-                // Шаг 3: Возвращаем прозрачность обратно в 1, чтобы новый экран плавно проявился
-                mainContent.style.opacity = '1';
-            }, 500); 
+            document.getElementById('questionScreen').style.display = 'none';
+            const form = document.getElementById('dateFormScreen');
+            form.classList.add('active');
+        }
+
+        // Отправка выбора в Telegram
+        async function submitDate() {
+            const date = document.getElementById('datePicker').value;
+            const time = document.getElementById('timePicker').value;
+            if (!date || !time) {
+                alert('Пожалуйста, выбери дату и время 🥺');
+                return;
+            }
+
+            // Собираем выбранные занятия
+            const checkboxes = document.querySelectorAll('#activities input[type="checkbox"]:checked');
+            const activities = Array.from(checkboxes).map(cb => cb.value);
+            const activitiesText = activities.length ? activities.join(', ') : 'Не выбрано';
+
+            // Формируем текст для Telegram
+            const message = `💌 *Свидание назначено!* 
+📅 ${date}
+⏰ ${time}
+🎯 Хочу: ${activitiesText}
+💸 *Готовь денюжку!*`;
+
+            // Отправляем через Telegram Bot API
+            const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                const data = await response.json();
+                if (data.ok) {
+                    // Показываем сообщение об успехе
+                    document.querySelector('.send-btn').style.display = 'none';
+                    document.getElementById('successMsg').style.display = 'block';
+                } else {
+                    alert('Ой, что-то пошло не так при отправке 😢');
+                    console.error(data);
+                }
+            } catch (error) {
+                alert('Ошибка соединения 😢');
+                console.error(error);
+            }
         }
     </script>
-
 </body>
 </html>
