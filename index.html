@@ -67,13 +67,15 @@
             display: flex; flex-direction: column; gap: 15px; width: 100%; padding: 20px;
             background: rgba(255, 255, 255, 0.9); border-radius: 20px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.05); box-sizing: border-box;
+            max-height: 65vh; 
+            overflow-y: auto;  
         }
         .date-form label { color: #b33939; font-size: 1.2rem; text-align: left; margin-bottom: -5px; }
         .date-form input[type="date"], .date-form input[type="time"] {
             padding: 10px; border: 2px solid #ffb3b3; border-radius: 12px;
             font-family: inherit; font-size: 1rem; background: white; outline: none;
         }
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 5px; }
+        .checkbox-group {display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 5px; padding-bottom: 5px;
         .checkbox-group label {
             display: flex; align-items: center; gap: 8px; background: #ffe0e0;
             padding: 8px 14px; border-radius: 25px; font-size: 0.9rem; color: #4a1515; cursor: pointer; transition: 0.2s;
