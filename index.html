@@ -36,10 +36,13 @@
             90% { opacity: 0.7; }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
+        /* Главная обертка для плавной анимации экранов */
         .content-wrapper {
             position: relative; z-index: 10;
             max-width: 400px; width: 90%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.4s ease-in-out; /* Плавность переходов */
+            opacity: 1;
         }
         .gif-container {
             width: 180px; height: 180px; border-radius: 50%; 
@@ -48,7 +51,15 @@
         }
         .gif-container img { width: 100%; height: 100%; object-fit: cover; }
         h1 { color: #b33939; font-size: 2.2rem; margin: 0 0 30px 0; padding: 0 20px; line-height: 1.4; }
-        .buttons-block { display: flex; justify-content: center; gap: 40px; width: 320px; height: 80px; position: relative; }
+        
+        /* Увеличили блок, чтобы развести кнопки дальше друг от друга */
+        .buttons-block { 
+            display: flex; 
+            justify-content: space-between; 
+            width: 280px; 
+            height: 60px; 
+            position: relative; 
+        }
         button, .submit-btn {
             width: 110px; height: 50px; font-family: inherit; font-size: 1.3rem;
             border: none; border-radius: 12px; cursor: pointer;
@@ -56,7 +67,17 @@
         }
         #yesBtn { background-color: #ffb3b3; color: #4a1515; }
         #yesBtn:hover { background-color: #ff9999; }
-        #noBtn { background-color: #ff9999; color: #4a1515; position: absolute; right: 40px; top: 0; }
+        
+        /* Кнопка нет теперь стоит четко справа без наложения */
+        #noBtn { 
+            background-color: #ff9999; 
+            color: #4a1515; 
+            position: absolute; 
+            right: 0; 
+            top: 0; 
+            transition: left 0.15s ease-out, top 0.15s ease-out;
+        }
+        
         .form-block { display: none; width: 100%; }
         .date-form {
             display: flex; flex-direction: column; gap: 15px; width: 100%; padding: 20px;
@@ -83,7 +104,7 @@
 
     <div class="hearts-container" id="heartsContainer"></div>
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="mainWrapper">
         <div class="gif-container">
             <img id="moodGif" src="https://media.tenor.com/s8rSo_KBvMkAAAAM/cute-cat-cat.gif" alt="Милые котики">
         </div>
@@ -96,7 +117,6 @@
         </div>
 
         <div class="form-block" id="formBlock">
-            <!-- ТУТ ЗАМЕНИТЕ НА ВАШУ ПОЧТУ -->
             <form class="date-form" id="dateForm" action="https://formsubmit.co/markowsky.daniil@gmail.com" method="POST">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_next" value="about:blank">
@@ -147,16 +167,25 @@
             noBtn.style.left = x + 'px'; noBtn.style.top = y + 'px';
         }
 
+        // Плавный переход на экран анкеты
         function sayYes() {
-            document.getElementById('buttonsBlock').style.display = 'none';
-            document.getElementById('mainTitle').innerHTML = "Прекрасный выбор! 🥰<br>Заполни анкету:";
-            document.getElementById('mainTitle').style.fontSize = "1.8rem";
-            document.getElementById('formBlock').style.display = 'block';
+            const wrapper = document.getElementById('mainWrapper');
+            wrapper.style.opacity = '0'; // Плавно гасим первый экран
+            
+            setTimeout(() => {
+                document.getElementById('buttonsBlock').style.display = 'none';
+                document.getElementById('mainTitle').innerHTML = "Прекрасный выбор! 🥰<br>Заполни анкету:";
+                document.getElementById('mainTitle').style.fontSize = "1.8rem";
+                document.getElementById('formBlock').style.display = 'block';
+                wrapper.style.opacity = '1'; // Плавно зажигаем анкету
+            }, 400); // 400 миллисекунд как раз хватает на исчезновение
         }
 
+        // Плавный переход на финальный экран после отправки
         document.getElementById('dateForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = this;
+            const wrapper = document.getElementById('mainWrapper');
             const h1 = document.getElementById('mainTitle');
             const gif = document.getElementById('moodGif');
 
@@ -166,10 +195,15 @@
                 headers: { 'Accept': 'application/json' }
             })
             .then(() => {
-                document.getElementById('formBlock').style.display = 'none';
-                gif.src = "https://media.tenor.com/3zvcxCJ9QeEAAAAM/tetriandoch.gif";
-                h1.innerHTML = "Ура! 🎉<br><br>Ответ отправлен мне на почту! ❤️<br>С меня вкусный кофе.<br><br>Жду тебя в Telegram, спишемся! 😉";
-                h1.style.fontSize = "2.1rem";
+                wrapper.style.opacity = '0'; // Плавно гасим анкету
+                
+                setTimeout(() => {
+                    document.getElementById('formBlock').style.display = 'none';
+                    gif.src = "https://media.tenor.com/3zvcxCJ9QeEAAAAM/tetriandoch.gif";
+                    h1.innerHTML = "Ура! 🎉<br><br>Ответ отправлен мне на почту! ❤️<br>С меня вкусный кофе.<br><br>Жду тебя в Telegram, спишемся! 😉";
+                    h1.style.fontSize = "2.1rem";
+                    wrapper.style.opacity = '1'; // Плавно зажигаем финал
+                }, 400);
             })
             .catch(error => {
                 alert('Ошибка сети. Напиши мне в ТГ! 😉');
