@@ -130,12 +130,18 @@
 
     <script>
         const container = document.getElementById('heartsContainer');
-        const heartSymbols = ['🍕', '🍻', '🩷', '🔥'];
-        
+
+        // Номера эмодзи: Пицца, Пиво, Сердечко (0x2764), Искры
+        const emojiCodes = [0x1F355, 0x1F37A, 0x2764, 0x2728];
+
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart-particle');
-            heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+    
+            // Превращаем цифры в эмодзи на лету
+            const randomCode = emojiCodes[Math.floor(Math.random() * emojiCodes.length)];
+            heart.innerText = String.fromCodePoint(randomCode);
+    
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = Math.random() * 3 + 3 + 's';
             heart.style.fontSize = Math.random() * 15 + 15 + 'px';
@@ -143,6 +149,7 @@
             setTimeout(() => { heart.remove(); }, 6000);
         }
         setInterval(createHeart, 350);
+
 
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
